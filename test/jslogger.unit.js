@@ -47,6 +47,7 @@ describe('JSLogger', function() {
       logger.once('data', function(data) {
         expect(JSON.parse(data).message).to.equal('error');
         expect(JSON.parse(data).level).to.equal('error');
+        expect(JSON.parse(data).callstack).to.be.a('array');
         done();
       });
       logger.error('error');
@@ -139,7 +140,8 @@ describe('JSLogger', function() {
           logger.once('data', function(data) {
               expect(JSON.parse(data).message).to.equal('trace');
               expect(JSON.parse(data).level).to.equal('trace');
-              done();
+              expect(JSON.parse(data).callstack).to.be.a('array');
+            done();
           });
           logger.trace('trace');
       });
