@@ -1,6 +1,7 @@
-Kad JSON Logger
+JSON Logger
 ===============
 
+Description
 ---
 Streaming log-rotated built-in logger in JSON format.
 
