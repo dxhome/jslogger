@@ -1,6 +1,6 @@
 {
   "name": "my-jslogger",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "nodejs logger with json formatting and log rotation built-in",
   "main": "index.js",
   "scripts": {
