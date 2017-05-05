@@ -1,8 +1,10 @@
 'use strict';
 
 const expect = require('chai').expect;
-const JSLogger = require('../lib/jslogger');
-const levels = require('../lib/consts').LOGLEVEL;
+const JSLogger = require('..');
+const JSRotator = JSLogger.RotatorStream;
+const levels = JSLogger.LOGLEVEL;
+const fs = require('fs');
 
 describe('JSLogger', function() {
 
@@ -156,5 +158,54 @@ describe('JSLogger', function() {
       });
 
     });
+
+  describe('#rotating', function() {
+    let logfilename = 'test.log';
+
+    before(function(done) {
+      try {
+        if (fs.existsSync(logfilename)) {
+          fs.unlink(logfilename);
+        }
+      }
+      catch (e) {
+        done(e);
+      }
+      done();
+    });
+
+    it('should log to rotated file stream', function(done) {
+      let stream = new JSRotator(logfilename);
+      let logger = new JSLogger();
+      logger.pipe(stream);
+      logger.error('test1');
+      logger.warn('test2');
+      logger.info('test3');
+
+      stream.end();
+      stream.on('finish', function() {
+        let logs = String(fs.readFileSync('test.log')).split('\n').map((item) => {
+          let line = item.trim('\n');
+
+          if (item.length !== 0) {
+            return JSON.parse(line);
+          }
+
+          return {};
+        });
+
+        expect(logs[0].message).to.equal('test1');
+        expect(logs[0].level).to.equal('error');
+        expect(logs[0].callstack).to.be.a('array');
+        expect(logs[1].message).to.equal('test2');
+        expect(logs[1].level).to.equal('warn');
+        expect(logs[2].message).to.equal('test3');
+        expect(logs[2].level).to.equal('info');
+
+        done();
+      });
+    });
+
+  });
 
 });

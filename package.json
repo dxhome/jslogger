@@ -1,5 +1,5 @@
 {
-  "name": "jslogger",
+  "name": "my-jslogger",
   "version": "0.1.0",
   "description": "nodejs logger with json formatting and log rotation built-in",
   "main": "index.js",
@@ -23,8 +23,11 @@
   },
   "homepage": "https://github.com/dxhome/jslogger#readme",
   "dependencies": {
+    "async": "^2.3.0",
     "chai": "^3.5.0",
-    "readable-stream": "^2.2.9"
+    "merge": "^1.2.0",
+    "readable-stream": "^2.2.9",
+    "rotating-file-stream": "^1.2.2"
   },
   "devDependencies": {
     "mocha": "^3.3.0"

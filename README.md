@@ -3,7 +3,7 @@ JSON Logger
 
 Description
 ---
-Streaming log-rotated built-in logger in JSON format.
+Streaming logger in JSON format with rotator streaming supported
 
 Quick Start
 -----------
@@ -25,13 +25,29 @@ var logger = new JSLogger(JSLogger.LOGLEVEL.info);
 
 ```
 
-Pipe the log output to any writable stream:
+Pipe the log output to any writable stream or built-in rotator stream:
 
 ```js
 // Make the logs your program's output
 logger.pipe(process.stdout);
+
 // Write the logs to a file
 logger.pipe(fs.createWriteStream('logfile.txt'));
+```
+
+Pipe the log output to a built-in rotator stream:
+
+```js
+// Write the logs to a file rotator
+var RotatorStream = require('my-jslogger').RotatorStream;
+
+var stream = RotatorStream('logfile.log', {
+    size:     '10M', // rotate every 10 MegaBytes written
+    interval: '1d',  // rotate daily
+    compress: 'gzip' // compress rotated files
+});
+
+logger.pipe(stream);
 ```
 
 License
