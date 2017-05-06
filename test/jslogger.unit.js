@@ -206,6 +206,27 @@ describe('JSLogger', function() {
       });
     });
 
+    it('should rotate log file successfully', function(done) {
+      this.timeout(15000);
+
+      let stream = new JSRotator(logfilename, {
+        size:     '10K',
+        maxFiles: 10,
+        interval: '1d',
+      });
+      let logger = new JSLogger();
+      logger.pipe(stream);
+
+      for (let i=0; i<50; i++) {
+        logger.error('test');
+      }
+
+      stream.end();
+      stream.on('finish', function() {
+        done();
+      });
+    });
+
   });
 
 });
