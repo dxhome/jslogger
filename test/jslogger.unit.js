@@ -212,7 +212,7 @@ describe('JSLogger', function() {
       let stream = new JSRotator(logfilename, {
         size:     '10K',
         maxFiles: 10,
-        interval: '1d',
+        rotationTime: true
       });
       let logger = new JSLogger();
       logger.pipe(stream);
